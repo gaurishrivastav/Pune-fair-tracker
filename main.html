@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{--bg:#0a0a0f;--surface:#111118;--surface2:#18181f;--surface3:#1f1f28;--border:rgba(255,255,255,0.07);--borderS:rgba(255,255,255,0.14);--text:#f0efff;--muted:#8887a8;--accent:#7c6fff;--green:#22d96e;--amber:#ffb347;--red:#ff5c5c;--uber:#1db9a4;--ola:#f7c231;--rapido:#4db8ff}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;line-height:1.6}
+h1,h2,h3,.logo{font-family:'Syne',system-ui,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;border-bottom:1px solid var(--border);background:rgba(10,10,15,.9);position:sticky;top:0;z-index:10}
+.logo{font-size:1.2rem;font-weight:800;letter-spacing:-.5px}.logo span{color:var(--accent)}
+.hbadges{display:flex;gap:6px}
+.badge{font-size:10.5px;padding:3px 9px;border-radius:99px;font-weight:500}
+.badge-s{background:rgba(34,217,110,.1);color:var(--green);border:1px solid rgba(34,217,110,.2)}
+.badge-f{background:rgba(124,111,255,.1);color:var(--accent);border:1px solid rgba(124,111,255,.2)}
+.hero{text-align:center;padding:2rem 1.2rem 1.2rem;max-width:600px;margin:0 auto}
+.eyebrow{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:.7rem}
+h1{font-size:clamp(1.5rem,4vw,2.4rem);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:.7rem}
+h1 em{font-style:normal;color:var(--accent)}
+.sub{color:var(--muted);font-size:.85rem;max-width:440px;margin:0 auto .5rem}
+.warn-pill{display:inline-flex;align-items:center;gap:6px;margin-top:.7rem;background:rgba(255,91,91,.08);border:1px solid rgba(255,91,91,.2);border-radius:99px;padding:5px 14px;font-size:11.5px;color:var(--red)}
+.wrap{max-width:820px;margin:0 auto;padding:0 1.2rem 3rem}
+.sec-bar{display:flex;align-items:center;gap:8px;background:rgba(34,217,110,.05);border:1px solid rgba(34,217,110,.1);border-radius:10px;padding:9px 13px;margin-bottom:1.2rem;font-size:11.5px;color:var(--muted);flex-wrap:wrap}
+.live{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;vertical-align:middle}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.slabel{font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.5;margin-bottom:.6rem}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.2rem}
+@media(max-width:500px){.steps{grid-template-columns:repeat(2,1fr)}}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.8rem;text-align:center}
+.snum{font-family:'Syne',system-ui;font-size:1.5rem;font-weight:800;color:var(--accent);opacity:.25;line-height:1;margin-bottom:4px}
+.stxt{font-size:11px;color:var(--muted);line-height:1.35}
+.card{background:var(--surface);border:1px solid var(--borderS);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem}
+.ch{font-family:'Syne',system-ui;font-size:11.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:480px){.g2,.g3{grid-template-columns:1fr}}
+.fl{display:flex;flex-direction:column;gap:5px}
+.fl label{font-size:10.5px;color:var(--muted);font-weight:500;letter-spacing:.4px;text-transform:uppercase}
+.fl input,.fl select{background:var(--surface2);border:1px solid var(--borderS);border-radius:9px;color:var(--text);font-size:13.5px;padding:8px 12px;outline:none;transition:border-color .2s;width:100%;font-family:inherit}
+.fl input:focus,.fl select:focus{border-color:var(--accent);background:var(--surface3)}
+.fl select option{background:var(--surface2)}
+.cbtn{width:100%;margin-top:1rem;padding:12px;background:var(--accent);border:none;border-radius:9px;color:#fff;font-family:'Syne',system-ui;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;letter-spacing:.3px}
+.cbtn:hover{opacity:.88;transform:translateY(-1px)}.cbtn:active{transform:scale(.98)}
+#results{display:none;margin-top:1.2rem}
+.rtitle{font-family:'Syne',system-ui;font-size:1rem;font-weight:700;margin-bottom:.8rem;color:var(--muted)}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.2rem}
+@media(max-width:460px){.pgrid{grid-template-columns:1fr}}
+.pc{background:var(--surface);border:1px solid var(--borderS);border-radius:14px;padding:1rem 1.1rem;position:relative;overflow:hidden;transition:border-color .2s}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.pc.uber::before{background:var(--uber)}.pc.ola::before{background:var(--ola)}.pc.rapido::before{background:var(--rapido)}
+.pn{font-family:'Syne',system-ui;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px}
+.pn.uber{color:var(--uber)}.pn.ola{color:var(--ola)}.pn.rapido{color:var(--rapido)}
+.pt{font-size:10.5px;color:var(--muted);margin-bottom:8px}
+.pf{font-family:'Syne',system-ui;font-size:1.5rem;font-weight:800;letter-spacing:-1px;margin-bottom:2px}
+.pf span{font-size:.85rem;font-weight:500;opacity:.7}
+.pr{font-size:11px;color:var(--muted);margin-bottom:8px}
+.pnote{font-size:11px;padding:4px 8px;border-radius:7px;background:rgba(34,217,110,.07);color:var(--green);border:1px solid rgba(34,217,110,.15)}
+.sp{display:inline-block;font-size:9.5px;padding:2px 7px;border-radius:99px;background:rgba(255,179,71,.12);color:var(--amber);border:1px solid rgba(255,179,71,.2);margin-left:5px;vertical-align:middle}
+.ccard{background:var(--surface);border:1px solid rgba(255,91,91,.25);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:1.2rem}
+.ctitle{font-family:'Syne',system-ui;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--red);margin-bottom:.8rem}
+.crow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.clabel{font-size:12.5px;font-weight:600;color:var(--text);min-width:60px}
+.cbars{flex:1;min-width:140px}
+.brow{display:flex;align-items:center;gap:6px;font-size:11px;margin-bottom:4px}
+.blabel{width:38px;color:var(--muted);font-size:10.5px}
+.btrack{flex:1;height:7px;background:var(--surface3);border-radius:99px;overflow:hidden}
+.bfill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.16,1,.3,1)}
+.bfill.app{background:var(--green)}.bfill.driver{background:var(--red)}
+.bval{min-width:50px;text-align:right;font-size:11.5px;font-weight:500}
+.opill{font-family:'Syne',system-ui;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.pin-s{background:var(--surface);border:1px solid var(--borderS);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.prow{display:flex;gap:7px;flex-wrap:wrap}
+.prow input{flex:1;min-width:120px;background:var(--surface2);border:1px solid var(--borderS);border-radius:9px;color:var(--text);font-size:13px;padding:8px 11px;outline:none;font-family:inherit}
+.prow input:focus{border-color:var(--accent)}
+.pbtn{padding:8px 14px;background:var(--surface3);border:1px solid var(--borderS);border-radius:9px;color:var(--text);font-size:12.5px;cursor:pointer;transition:background .2s;white-space:nowrap;font-family:inherit}
+.pbtn:hover{background:var(--accent);border-color:var(--accent)}
+.plist{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.pitem{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border-radius:8px;padding:7px 10px;font-size:12.5px;flex-wrap:wrap;gap:5px;animation:sl .3s ease}
+@keyframes sl{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.proute{color:var(--muted);font-size:11px}
+.pfare{font-family:'Syne',system-ui;font-weight:700;font-size:14px}
+.pfare.fair{color:var(--green)}.pfare.high{color:var(--amber)}.pfare.rip{color:var(--red)}
+.pverd{font-size:10.5px;padding:2px 8px;border-radius:99px}
+.pverd.fair{background:rgba(34,217,110,.1);color:var(--green)}.pverd.high{background:rgba(255,179,71,.1);color:var(--amber)}.pverd.rip{background:rgba(255,91,91,.1);color:var(--red)}
+.prmv{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;padding:0 3px;line-height:1}.prmv:hover{color:var(--red)}
+.acard{background:var(--surface);border:1px solid rgba(77,184,255,.2);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:1.2rem}
+.atitle{font-family:'Syne',system-ui;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--rapido);margin-bottom:.6rem}
+.areason{font-size:12.5px;color:var(--muted);margin-bottom:.9rem}
+.agrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.aitem{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;text-decoration:none;transition:border-color .2s,background .2s}
+.aitem:hover{border-color:rgba(77,184,255,.35);background:var(--surface3)}
+.aico{font-size:18px;margin-bottom:2px}
+.aname{font-family:'Syne',system-ui;font-size:12.5px;font-weight:700;color:var(--text)}
+.adesc{font-size:11px;color:var(--muted);line-height:1.4}
+.albl{font-size:10.5px;color:var(--rapido);margin-top:3px}
+.rcard{background:var(--surface);border:1px solid rgba(255,179,71,.18);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:1.2rem}
+.rtitle2{font-family:'Syne',system-ui;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--amber);margin-bottom:.8rem}
+footer{border-top:1px solid var(--border);padding:1.2rem;text-align:center;font-size:11px;color:var(--muted)}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <div class="logo">Pune<span>Fare</span></div>
+  <div class="hbadges">
+    <span class="badge badge-s">🔒 Secure</span>
+    <span class="badge badge-f">No Login</span>
+  </div>
+</header>
+
+<div class="hero">
+  <p class="eyebrow">Pune City Cab Fare Checker</p>
+  <h1>Don't get <em>overcharged</em>.<br>Know the real fare.</h1>
+  <p class="sub">Compare Uber, Ola & Rapido app prices vs driver quotes. Find cheaper transit options.</p>
+  <span class="warn-pill">⚠ Pune drivers quote up to 3× the app fare — know your rights</span>
+</div>
+
+<div class="wrap">
+  <div class="sec-bar">
+    <span style="color:var(--green)">🔒</span>
+    <span><strong style="color:var(--green)">Private:</strong> No data stored or transmitted. All calculations are local to your browser.</span>
+    <span class="live"></span><span style="color:var(--green);font-weight:500">Offline-capable</span>
+  </div>
+
+  <p class="slabel">How it works</p>
+  <div class="steps">
+    <div class="step"><div class="snum">1</div><div class="stxt">Enter pickup & drop in Pune</div></div>
+    <div class="step"><div class="snum">2</div><div class="stxt">See Uber, Ola, Rapido estimates</div></div>
+    <div class="step"><div class="snum">3</div><div class="stxt">Enter driver's quoted price</div></div>
+    <div class="step"><div class="snum">4</div><div class="stxt">Get verdict — fair or rip-off</div></div>
+  </div>
+
+  <div class="card">
+    <p class="ch">📍 Enter Your Route</p>
+    <div class="g2">
+      <div class="fl"><label>From (Pickup)</label><input type="text" id="from" placeholder="e.g. Shivaji Nagar"></div>
+      <div class="fl"><label>To (Drop)</label><input type="text" id="to" placeholder="e.g. Hinjawadi Phase 1"></div>
+    </div>
+    <div class="g3">
+      <div class="fl"><label>Distance (km)</label><input type="number" id="dist" placeholder="e.g. 12" min="0.5" max="100" step="0.5"></div>
+      <div class="fl"><label>Cab Type</label>
+        <select id="ctype">
+          <option value="auto">Auto / Bike</option>
+          <option value="mini" selected>Mini / Micro</option>
+          <option value="sedan">Sedan / Prime</option>
+          <option value="suv">SUV / XL</option>
+        </select>
+      </div>
+      <div class="fl"><label>Time of Day</label>
+        <select id="tod">
+          <option value="normal">Normal Hours</option>
+          <option value="peak">Peak (8–10am, 6–9pm)</option>
+          <option value="night">Night (10pm–6am)</option>
+        </select>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="fl"><label>Driver Quoted (₹)</label><input type="number" id="dquote" placeholder="e.g. 350" min="0"></div>
+      <div class="fl"><label>Wait Time (min)</label><input type="number" id="wait" placeholder="0" min="0" value="0"></div>
+      <div class="fl"><label>Passengers</label>
+        <select id="pax">
+          <option>1</option><option>2</option><option>3</option><option>4</option>
+        </select>
+      </div>
+    </div>
+    <button class="cbtn" onclick="calc()">📊 Calculate & Compare Fares</button>
+  </div>
+
+  <div id="results">
+    <p class="rtitle">📈 Platform Fare Estimates</p>
+    <div class="pgrid" id="pgrid"></div>
+    <div class="ccard" id="csec"><div class="ctitle">⚠ App Fare vs Driver Quote</div><div id="crows"></div></div>
+    <div class="pin-s">
+      <p class="ch">📌 Pin This Fare</p>
+      <div class="prow">
+        <input type="text" id="pnote" placeholder="Note (e.g. Kothrud to Wakad)">
+        <button class="pbtn" onclick="pinF()">Pin Fare</button>
+      </div>
+      <div class="plist" id="plist"></div>
+    </div>
+    <div class="acard" id="asec">
+      <div class="atitle">🚌 Cheaper Transit Options</div>
+      <p class="areason" id="areason"></p>
+      <div class="agrid" id="agrid"></div>
+    </div>
+  </div>
+
+  <div class="rcard">
+    <p class="rtitle2">⚖ Know Your Rights — Pune Cab Rules</p>
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--muted)">
+      <p>→ Drivers <strong style="color:var(--text)">cannot refuse</strong> a metered/app-booked fare. Refusal is punishable under Maharashtra motor vehicle rules.</p>
+      <p>→ If a driver demands more than the app fare, you can <strong style="color:var(--text)">cancel without penalty</strong> — the cancellation charge doesn't apply if the driver violates fare terms.</p>
+      <p>→ File complaints at <strong style="color:var(--text)">RTO Pune: 020-26128000</strong> or via in-app grievance against inflated quoting.</p>
+      <p>→ Surge pricing must be disclosed <em>before</em> you confirm booking. Undisclosed post-booking surge = grounds for refund.</p>
+      <p>→ <strong style="color:var(--text)">Screenshot the app fare before boarding</strong> — this is your evidence in disputes.</p>
+    </div>
+  </div>
+
+  <div class="card" style="border-color:rgba(255,91,91,.2)">
+    <p class="ch" style="color:var(--red)">📋 Report Overcharging (Session Only)</p>
+    <div class="g2">
+      <div class="fl"><label>Platform</label><select id="rplat"><option>Uber</option><option>Ola</option><option>Rapido</option><option>Other</option></select></div>
+      <div class="fl"><label>Area / Route</label><input type="text" id="rarea" placeholder="e.g. FC Road to Baner"></div>
+      <div class="fl"><label>App Fare Shown (₹)</label><input type="number" id="rapp" placeholder="e.g. 120"></div>
+      <div class="fl"><label>Driver Demanded (₹)</label><input type="number" id="rdrv" placeholder="e.g. 350"></div>
+    </div>
+    <button class="cbtn" style="background:rgba(255,91,91,.12);color:var(--red);border:1px solid rgba(255,91,91,.3)" onclick="submitR()">Submit Report (Local Only)</button>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px">Reports stored only in this session — never transmitted.</p>
+    <div id="rlist" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<footer>
+  PuneFare — No login · No tracking · No ads · All local &nbsp;|&nbsp;
+  <a href="https://pmpml.org" target="_blank" rel="noopener">PMPML</a> &nbsp;|&nbsp;
+  <a href="https://punemetrorail.org" target="_blank" rel="noopener">Pune Metro</a> &nbsp;|&nbsp;
+  <a href="https://punecorporation.org/en" target="_blank" rel="noopener">PMC</a>
+</footer>
+
+<script>
+const R={auto:{uber:{b:30,k:12},ola:{b:25,k:11},rapido:{b:20,k:10}},mini:{uber:{b:50,k:15},ola:{b:45,k:14},rapido:{b:40,k:13}},sedan:{uber:{b:65,k:18},ola:{b:60,k:17},rapido:{b:55,k:16}},suv:{uber:{b:80,k:22},ola:{b:75,k:21},rapido:{b:70,k:20}}};
+const S={normal:1,peak:1.4,night:1.25};
+const P=[{id:'uber',n:'Uber',c:'uber',t:{auto:'UberAuto',mini:'UberGo',sedan:'Premier',suv:'UberXL'}},{id:'ola',n:'Ola',c:'ola',t:{auto:'Ola Auto',mini:'Ola Mini',sedan:'Ola Prime',suv:'Ola Lux'}},{id:'rapido',n:'Rapido',c:'rapido',t:{auto:'Rapido Auto',mini:'Rapido Cab',sedan:'Rapido Prime',suv:'Rapido Cab+'}}];
+const T=[{n:'PMPML Bus',i:'🚌',d:'Covers most of Pune & PCMC. Fare ₹5–₹30.',u:'https://pmpml.org',l:'View Routes →'},{n:'Pune Metro',i:'🚇',d:'Purple & Aqua Lines. Fare ₹10–₹40.',u:'https://punemetrorail.org',l:'Metro Map →'},{n:'Local Railway',i:'🚆',d:'Pune–Lonavala & Pune–Daund lines.',u:'https://enquiry.indianrail.gov.in',l:'Train Times →'},{n:'Rapido Bike',i:'🏍️',d:'Bike taxi — much cheaper for short trips.',u:'https://rapido.bike',l:'Book Rapido →'}];
+let pins=[],reps=[];
+
+function calc(){
+  const d=parseFloat(document.getElementById('dist').value);
+  const ct=document.getElementById('ctype').value;
+  const tod=document.getElementById('tod').value;
+  const dq=parseFloat(document.getElementById('dquote').value)||0;
+  const wt=parseInt(document.getElementById('wait').value)||0;
+  if(!d||d<=0){alert('Enter a valid distance.');return;}
+  const sg=S[tod],wc=wt*1.5;
+  const fares=P.map(p=>{const r=R[ct][p.id];const base=r.b+(r.k*d)+wc;const mid=Math.round(base*sg);return{...p,low:Math.round(base*sg*.9),mid,high:Math.round(base*sg*1.15),tn:p.t[ct]};});
+  renderP(fares,sg>1,tod);renderC(fares,dq);renderA(fares,dq,d);
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderP(f,surge,tod){
+  const sl={peak:'1.4× Peak Surge',night:'1.25× Night',normal:''};
+  document.getElementById('pgrid').innerHTML=f.map(p=>`<div class="pc ${p.c}"><div class="pn ${p.c}">${p.n}${surge?`<span class="sp">${sl[tod]}</span>`:''}</div><div class="pt">${p.tn}</div><div class="pf"><span>₹</span>${p.mid}</div><div class="pr">Range ₹${p.low}–₹${p.high}</div><div class="pnote">App estimate</div></div>`).join('');
+}
+
+function renderC(f,dq){
+  const cs=document.getElementById('csec');
+  if(!dq){cs.style.display='none';return;}cs.style.display='block';
+  const mx=Math.max(...f.map(x=>x.mid),dq)*1.05;
+  document.getElementById('crows').innerHTML=f.map(p=>{
+    const pct=Math.round(((dq-p.mid)/p.mid)*100);
+    const vc=pct<=10?'var(--green)':pct<=50?'var(--amber)':'var(--red)';
+    const vt=pct<=10?'Fair':`${pct}% over`;
+    return`<div class="crow"><span class="clabel">${p.n}</span><div class="cbars"><div class="brow"><span class="blabel">App</span><div class="btrack"><div class="bfill app" style="width:${(p.mid/mx*100).toFixed(1)}%"></div></div><span class="bval" style="color:var(--green)">₹${p.mid}</span></div><div class="brow"><span class="blabel">Driver</span><div class="btrack"><div class="bfill driver" style="width:${(dq/mx*100).toFixed(1)}%"></div></div><span class="bval" style="color:var(--red)">₹${dq}</span></div></div><span class="opill" style="background:${pct<=10?'rgba(34,217,110,.1)':pct<=50?'rgba(255,179,71,.1)':'rgba(255,91,91,.12)'};color:${vc}">${vt}</span></div>`;
+  }).join('');
+}
+
+function renderA(f,dq,d){
+  const as=document.getElementById('asec'),ar=document.getElementById('areason');
+  const avg=Math.round(f.reduce((s,x)=>s+x.mid,0)/f.length);
+  const show=(dq&&dq>avg*1.5)||d<=5||avg>200;
+  if(!show){as.style.display='none';return;}as.style.display='block';
+  if(dq&&dq>avg*1.5)ar.textContent=`The quoted fare of ₹${dq} is much above the app estimate of ₹${avg}. Consider these alternatives:`;
+  else if(d<=5)ar.textContent=`This is a short ${d}km trip — public transit or a bike taxi is much cheaper:`;
+  else ar.textContent=`For this route, public transit may save you significantly:`;
+  document.getElementById('agrid').innerHTML=T.map(t=>`<a class="aitem" href="${t.u}" target="_blank" rel="noopener noreferrer"><span class="aico">${t.i}</span><span class="aname">${t.n}</span><span class="adesc">${t.d}</span><span class="albl">${t.l}</span></a>`).join('');
+}
+
+function pinF(){
+  const d=parseFloat(document.getElementById('dist').value);
+  if(!d){alert('Calculate fares first.');return;}
+  const ct=document.getElementById('ctype').value,tod=document.getElementById('tod').value;
+  const from=document.getElementById('from').value||'Unknown',to=document.getElementById('to').value||'Unknown';
+  const dq=parseFloat(document.getElementById('dquote').value)||0,note=document.getElementById('pnote').value;
+  const sg=S[tod],r=R[ct]['uber'];
+  const af=Math.round((r.b+r.k*d)*sg);
+  const pct=dq?Math.round(((dq-af)/af)*100):0;
+  const v=!dq?'fair':pct<=15?'fair':pct<=60?'high':'rip';
+  const vl=!dq?'App Only':pct<=15?'Fair Price':pct<=60?'Overpriced':'Rip-off!';
+  pins.unshift({id:Date.now(),route:note||`${from} → ${to}`,af,dq,v,vl,d});
+  renderPins();document.getElementById('pnote').value='';
+}
+
+function renderPins(){
+  const l=document.getElementById('plist');
+  if(!pins.length){l.innerHTML='<p style="font-size:11.5px;color:var(--muted);padding:5px 0">No pinned fares yet.</p>';return;}
+  l.innerHTML=pins.map(p=>`<div class="pitem"><span class="proute">${p.route} (${p.d}km)</span><span class="pfare ${p.v}">₹${p.dq||p.af}</span><span class="pverd ${p.v}">${p.vl}</span>${p.dq?`<span style="font-size:10.5px;color:var(--muted)">App:₹${p.af}</span>`:''}<button class="prmv" onclick="rmPin(${p.id})">×</button></div>`).join('');
+}
+
+function rmPin(id){pins=pins.filter(p=>p.id!==id);renderPins();}
+
+function submitR(){
+  const pl=document.getElementById('rplat').value,app=parseFloat(document.getElementById('rapp').value),drv=parseFloat(document.getElementById('rdrv').value),area=document.getElementById('rarea').value;
+  if(!app||!drv||!area){alert('Fill all report fields.');return;}
+  reps.unshift({pl,app,drv,area,pct:Math.round(((drv-app)/app)*100),t:new Date().toLocaleTimeString()});
+  renderReps();['rapp','rdrv','rarea'].forEach(id=>document.getElementById(id).value='');
+}
+
+function renderReps(){
+  const l=document.getElementById('rlist');
+  if(!reps.length){l.innerHTML='';return;}
+  l.innerHTML=`<p style="font-size:11px;color:var(--muted);margin-bottom:6px">Session reports (not transmitted):</p>`+reps.map(r=>`<div class="pitem"><span class="pverd rip">${r.pl}</span><span class="proute">${r.area}</span><span style="font-size:11.5px;color:var(--muted)">App ₹${r.app} → Driver ₹${r.drv}</span><span class="opill" style="background:rgba(255,91,91,.12);color:var(--red)">${r.pct}% over</span><span style="font-size:10.5px;color:var(--muted)">${r.t}</span></div>`).join('');
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&['dist','from','to'].includes(e.target.id))calc();});
+</script>
+</body>
+</html>
